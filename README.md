@@ -273,7 +273,7 @@ Every commit and pull request triggers `.github/workflows/ci.yml`:
 | `GET` | `/api/notifications` | Yes | List notifications with unread count |
 | `PUT` | `/api/notifications/read-all` | Yes | Mark all notifications as read |
 | `GET` | `/api/recurring` | Yes | Scheduled recurring expenses |
-| `POST` | `/api/recurring/:id/log-as-expense` | Yes | Log recurring bill as expense and advance due date |
+| `POST` | `/api/recurring/:id/log-as-expense` | Yes | Log recurring bill as expense and advance due date 
 
 ---
 
