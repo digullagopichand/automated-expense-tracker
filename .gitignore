@@ -1,0 +1,17 @@
+node_modules
+dist
+.env
+.env.local
+*.sqlite
+*.sqlite.tmp
+*.tmp
+uploads/*
+!uploads/.gitkeep
+backend/data/*.sqlite
+backend/data/*.tmp
+backend/uploads/*
+!backend/uploads/.gitkeep
+coverage
+npm-debug.log*
+.DS_Store
+Thumbs.db

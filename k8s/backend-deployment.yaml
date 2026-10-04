@@ -1,0 +1,108 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: expense-tracker-backend
+  namespace: expense-tracker
+  labels:
+    app: expense-tracker
+    tier: backend
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: expense-tracker
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: expense-tracker
+        tier: backend
+    spec:
+      containers:
+        - name: backend
+          image: jvssiddhartha/automated-expense-tracker-backend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5000
+              name: http
+          envFrom:
+            - configMapRef:
+                name: expense-tracker-config
+            - secretRef:
+                name: expense-tracker-secret
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 2
+          volumeMounts:
+            - name: data-volume
+              mountPath: /app/data
+            - name: uploads-volume
+              mountPath: /app/uploads
+      volumes:
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: expense-tracker-data-pvc
+        - name: uploads-volume
+          persistentVolumeClaim:
+            claimName: expense-tracker-uploads-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: expense-tracker-data-pvc
+  namespace: expense-tracker
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: expense-tracker-uploads-pvc
+  namespace: expense-tracker
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: expense-tracker-backend
+  namespace: expense-tracker
+spec:
+  type: ClusterIP
+  selector:
+    app: expense-tracker
+    tier: backend
+  ports:
+    - port: 5000
+      targetPort: 5000
+      name: http
