@@ -293,3 +293,5 @@ Every commit and pull request triggers `.github/workflows/ci.yml`:
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
+
+DevOps deployment verified using Docker and Kubernetes.
