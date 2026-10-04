@@ -294,7 +294,20 @@ Every commit and pull request triggers `.github/workflows/ci.yml`:
 
 This project is licensed under the [MIT License](LICENSE).
 
-DevOps deployment verified using Docker and Kubernetes.
-CI workflow trigger test.
+npm run dev
+http://localhost:3000
+http://localhost:5000/health
 
-hello 
+docker compose up -d
+docker compose ps
+http://localhost:3000
+
+minikube start --driver=docker
+kubectl get pods -n expense-tracker
+kubectl get svc -n expense-tracker
+minikube service expense-tracker-frontend -n expense-tracker --url
+
+git status
+git add .
+git commit -m "Update application"
+git push
