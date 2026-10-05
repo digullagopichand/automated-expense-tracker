@@ -302,6 +302,7 @@ docker compose up -d
 docker compose ps
 http://localhost:3000
 
+$env:Path += ";C:\Program Files\Kubernetes\Minikube"
 minikube start --driver=docker
 kubectl get pods -n expense-tracker
 kubectl get svc -n expense-tracker
